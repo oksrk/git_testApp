@@ -15,6 +15,7 @@ class TodoControllerTest extends TestCase
     {
         parent::setUp();
         
+        Todo::factory()->count(5)->create();
     }
 
     /**
