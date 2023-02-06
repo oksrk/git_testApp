@@ -24,19 +24,14 @@ class TodoFactory extends Factory
      */
     public function definition()
     {
-        // $title = substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5);
-        // $content = substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5);
+        $title = substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5);
+        $content = substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5);
         
-        // Todo::factory()->count(5)->make([
-        //     'title' => substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5),
-        //     'content' => substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789"), 0, 5)
-        // ]);
-        // Todo::factory()->count(5)-> create();
-
         return [
-            'title' => $this->faker->name,
-            'content' => $this->faker->name
+            'title' => $title,
+            'content' => $content
         ];
+        
     }
 }
 

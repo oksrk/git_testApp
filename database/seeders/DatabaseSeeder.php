@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Todo;
+// use App\Models\Todo;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        
         // Todo::Factory()->count(5)->create();
     }
 }
