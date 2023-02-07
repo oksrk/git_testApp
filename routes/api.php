@@ -2,8 +2,8 @@
 use App\Http\Controllers\Api\TodoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Todo;
+// use Illuminate\Support\Facades\Auth;
+// use App\Models\Todo;
 
 /*
 |--------------------------------------------------------------------------

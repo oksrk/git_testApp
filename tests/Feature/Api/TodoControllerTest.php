@@ -4,7 +4,6 @@ namespace Tests\Feature\Api;
 
 use App\Models\Todo;
 use Tests\TestCase;
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TodoControllerTest extends TestCase
@@ -15,7 +14,7 @@ class TodoControllerTest extends TestCase
     {
         parent::setUp();
         
-        Todo::factory()->count(5)->create();
+        Todo::factory()->createOne();
     }
 
     /**
@@ -32,7 +31,7 @@ class TodoControllerTest extends TestCase
         $res->assertOk();
         $Data = Todo::all();
 
-        $this->assertCount(6, $Data);
+        $this->assertCount(2, $Data);
 
         $newData = $Data->last();
         $this->assertEquals($params['title'], $newData->title);
@@ -53,7 +52,7 @@ class TodoControllerTest extends TestCase
         $res->assertUnprocessable();
 
         $Data = Todo::all();
-        $this->assertCount(5, $Data);
+        $this->assertCount(1, $Data);
     }
 
     /**
