@@ -19,7 +19,7 @@ class TodoControllerTest extends TestCase
     /**
      * @test
      */
-    public function Todoの新規作成()
+    public function todoの新規作成()
     {
         $params = [
             'title' => 'test title',
@@ -28,11 +28,11 @@ class TodoControllerTest extends TestCase
 
         $res = $this->postJson(route('api.todo.create'), $params);
         $res->assertOk();
-        $Data = Todo::all();
+        $data = Todo::all();
 
-        $this->assertCount(1, $Data);
+        $this->assertCount(1, $data);
 
-        $newData = $Data->last();
+        $newData = $data->last();
         $this->assertEquals($params['title'], $newData->title);
         $this->assertEquals($params['content'], $newData->content);
     }
@@ -40,7 +40,7 @@ class TodoControllerTest extends TestCase
         /**
      * @test
      */
-    public function Todoの新規作成失敗()
+    public function todoの新規作成失敗()
     {
         $params = [
             'title' => 'test title',
@@ -50,14 +50,14 @@ class TodoControllerTest extends TestCase
         $res = $this->postJson(route('api.todo.create'), $params);
         $res->assertUnprocessable();
 
-        $Data = Todo::all();
-        $this->assertCount(0, $Data);
+        $data = Todo::all();
+        $this->assertCount(0, $data);
     }
 
     /**
      * @test
      */
-    public function Todoの詳細取得()
+    public function todoの詳細取得()
     {
         $id = Todo::factory()->createOne()->id;
         $res = $this->getJson(route('api.todo.show', ['id' => $id]));
@@ -67,7 +67,7 @@ class TodoControllerTest extends TestCase
     /**
      * @test
      */
-    public function Todoの詳細取得失敗()
+    public function todoの詳細取得失敗()
     {
         $id = Todo::factory()->createOne()->id + 1;
         $res = $this->getJson(route('api.todo.show', ['id' => $id]));
@@ -77,9 +77,10 @@ class TodoControllerTest extends TestCase
     /**
      * @test
      */
-    public function Todoの更新処理()
+    public function todoの更新処理()
     {
         $id = Todo::factory()->createOne()->id;
+        // var_dump($id);　//factoryにて作成のid取得
         $params = [
             'title' => 'chaged title',
             'content' =>  'chaged content',
@@ -87,8 +88,10 @@ class TodoControllerTest extends TestCase
 
         $res = $this->putJson(route('api.todo.update', ['id' => $id]), $params);
         $res->assertOk();
+        
 
         $editedData = Todo::find($id);
+        // var_dump($editedData);exit;
         $this->assertEquals($params['title'], $editedData->title);
         $this->assertEquals($params['content'], $editedData->content);
     }
@@ -96,7 +99,7 @@ class TodoControllerTest extends TestCase
     /**
      * @test
      */
-    public function Todoの更新処理失敗()
+    public function todoの更新処理失敗()
     {
         $id = Todo::factory()->createOne()->id;
         $params = [
@@ -112,17 +115,21 @@ class TodoControllerTest extends TestCase
     /**
      * @test
      */
-    public function Todoの削除処理()
+    public function todoの削除処理()
     {
         $id = Todo::factory()->createOne()->id;
+        // var_dump($id); //factoryにて作成のid取得
         $res = $this->deleteJson(route('api.todo.destroy', ['id' => $id]));
         $res->assertOk();
+        // $deleteId = Todo::find($id); //delete実行後のidがあるか変数に代入
+        // var_dump($deleteId);exit;　//idがあるか確認
+
     }
 
     /**
      * @test
      */
-    public function Todoの削除処理失敗()
+    public function todoの削除処理失敗()
     {
         $id = Todo::factory()->createOne()->id + 1;
         $res = $this->deleteJson(route('api.todo.destroy', ['id' => $id]));
