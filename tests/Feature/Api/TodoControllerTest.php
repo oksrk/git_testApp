@@ -91,7 +91,7 @@ class TodoControllerTest extends TestCase
         
 
         $editedData = Todo::find($id);
-        // var_dump($editedData);exit;
+        // var_dump($editedData);exit;　//idにて確認,title,contentの更新確認
         $this->assertEquals($params['title'], $editedData->title);
         $this->assertEquals($params['content'], $editedData->content);
     }
