@@ -14,7 +14,6 @@ class TodoControllerTest extends TestCase
     {
         parent::setUp();
         
-        Todo::factory()->createOne();
     }
 
     /**
@@ -31,7 +30,7 @@ class TodoControllerTest extends TestCase
         $res->assertOk();
         $Data = Todo::all();
 
-        $this->assertCount(2, $Data);
+        $this->assertCount(1, $Data);
 
         $newData = $Data->last();
         $this->assertEquals($params['title'], $newData->title);
@@ -52,7 +51,7 @@ class TodoControllerTest extends TestCase
         $res->assertUnprocessable();
 
         $Data = Todo::all();
-        $this->assertCount(1, $Data);
+        $this->assertCount(0, $Data);
     }
 
     /**
@@ -60,6 +59,7 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの詳細取得()
     {
+        Todo::factory()->createOne();
         $id = Todo::all()->first()->id;
         $res = $this->getJson(route('api.todo.show', ['id' => $id]));
         $res->assertOk();
@@ -70,6 +70,7 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの詳細取得失敗()
     {
+        Todo::factory()->createOne();
         $id = Todo::all()->last()->id + 1;
         $res = $this->getJson(route('api.todo.show', ['id' => $id]));
         $res->assertNotFound(); // 存在しないidで検索をかけた結果、404エラーが返ってくる。
@@ -80,9 +81,10 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの更新処理()
     {
+        Todo::factory()->createOne();
         $params = [
             'title' => 'chaged title',
-            'content' => 'chaged content',
+            'content' =>  'chaged content',
         ];
 
         $id = Todo::all()->first()->id;
@@ -99,7 +101,7 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの更新処理失敗()
     {
-
+        Todo::factory()->createOne();
         $params = [
             'title' => 'chaged title',
             'content' =>  null, // key未定義、null、空、文字列ではない、256文字以上、の場合バリデーションエラー（ステータスコード：422）が返ってくる。
@@ -116,6 +118,7 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの削除処理()
     {
+        Todo::factory()->createOne();
         $id = Todo::all()->first()->id;
         $res = $this->deleteJson(route('api.todo.destroy', ['id' => $id]));
         $res->assertOk();
@@ -126,6 +129,7 @@ class TodoControllerTest extends TestCase
      */
     public function Todoの削除処理失敗()
     {
+        Todo::factory()->createOne();
         $id = Todo::all()->last()->id + 1;
         $res = $this->deleteJson(route('api.todo.destroy', ['id' => $id]));
         $res->assertNotFound();
