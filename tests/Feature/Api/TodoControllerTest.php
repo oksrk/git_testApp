@@ -44,7 +44,7 @@ class TodoControllerTest extends TestCase
     {
         $params = [
             'title' => 'test title',
-            'content' => null, // key未定義、null、空、文字列ではない、256文字以上、の場合バリデーションエラー（ステータスコード：422）が返ってくる。
+            'content' => null,
         ];
 
         $res = $this->postJson(route('api.todo.create'), $params);
@@ -71,7 +71,7 @@ class TodoControllerTest extends TestCase
     {
         $id = Todo::factory()->createOne()->id + 1;
         $res = $this->getJson(route('api.todo.show', ['id' => $id]));
-        $res->assertNotFound(); // 存在しないidで検索をかけた結果、404エラーが返ってくる。
+        $res->assertNotFound();
     }
 
     /**
@@ -80,7 +80,6 @@ class TodoControllerTest extends TestCase
     public function todoの更新処理()
     {
         $id = Todo::factory()->createOne()->id;
-        // var_dump($id);　//factoryにて作成のid取得
         $params = [
             'title' => 'chaged title',
             'content' =>  'chaged content',
@@ -89,9 +88,7 @@ class TodoControllerTest extends TestCase
         $res = $this->putJson(route('api.todo.update', ['id' => $id]), $params);
         $res->assertOk();
         
-
         $editedData = Todo::find($id);
-        // var_dump($editedData);exit;　//idにて確認,title,contentの更新確認
         $this->assertEquals($params['title'], $editedData->title);
         $this->assertEquals($params['content'], $editedData->content);
     }
@@ -104,7 +101,7 @@ class TodoControllerTest extends TestCase
         $id = Todo::factory()->createOne()->id;
         $params = [
             'title' => 'chaged title',
-            'content' =>  null, // key未定義、null、空、文字列ではない、256文字以上、の場合バリデーションエラー（ステータスコード：422）が返ってくる。
+            'content' =>  null,
         ];
         
         $res = $this->putJson(route('api.todo.update', ['id' => $id]), $params);
@@ -118,11 +115,8 @@ class TodoControllerTest extends TestCase
     public function todoの削除処理()
     {
         $id = Todo::factory()->createOne()->id;
-        // var_dump($id); //factoryにて作成のid取得
         $res = $this->deleteJson(route('api.todo.destroy', ['id' => $id]));
         $res->assertOk();
-        // $deleteId = Todo::find($id); //delete実行後のidがあるか変数に代入
-        // var_dump($deleteId);exit;　//idがあるか確認
 
     }
 
