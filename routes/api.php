@@ -2,8 +2,9 @@
 use App\Http\Controllers\Api\TodoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\Auth;
-// use App\Models\Todo;
+use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\CompanyClaimController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,14 @@ Route::post('todo/create', [TodoController::class, 'store'])->name('api.todo.cre
 Route::get('todo/{id}/show', [TodoController::class, 'show'])->name('api.todo.show');
 Route::put('todo/{id}/update', [TodoController::class, 'update'])->name('api.todo.update');
 Route::delete('todo/{id}/destroy', [TodoController::class, 'destroy'])->name('api.todo.destroy');
+
+Route::post('company/create', [CompanyController::class, 'store'])->name('api.company.create');
+Route::get('company/{id}/show', [CompanyController::class, 'show'])->name('api.company.show');
+Route::put('company/{id}/update', [CompanyController::class, 'update'])->name('api.company.update');
+Route::delete('company/{id}/destroy', [CompanyController::class, 'destroy'])->name('api.company.destroy');
+
+Route::post('companyclaim/create', [CompanyClaimController::class, 'store'])->name('api.companyclaim.create');
+Route::get('companyclaim/{id}/show', [CompanyClaimController::class, 'show'])->name('api.companyclaim.show');
+Route::put('companyclaim/{id}/update', [CompanyClaimController::class, 'update'])->name('api.companyclaim.update');
+Route::delete('companyclaim/{id}/destroy', [CompanyClaimController::class, 'destroy'])->name('api.companyclaim.destroy');
+

@@ -18,7 +18,6 @@ class TodoController extends Controller
     * constructor function
     * @param Todo $todo
     */
-
     public function __construct(Todo $todo)
     {
         $this->todo = $todo;
