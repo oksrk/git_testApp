@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\CompanyClaim;
 
@@ -12,33 +13,45 @@ class CompanyClaimController extends Controller
     /**
     * @var CompanyClaim
     */
-    private CompanyClaim $companyclaim;
+    private CompanyClaim $companyClaim;
+    private Company $company;
 
     /**
     * constructor function
+
     * @param CompanyClaim $companyClaim
+    * @param Company $company
+
     */
-    public function __construct(CompanyClaim $companyclaim)
+    public function __construct(CompanyClaim $companyClaim, Company $company)
     {
-        $this->companyclaim = $companyclaim;
+        $this->companyClaim = $companyClaim;
+        $this->company = $company;
     }
     
     /**
      * companyClaim_Register
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $id
      * @return array
      */
-    public function store(Request $request)
+    public function store(Request $request, int $id)
     {
-        $validated = $request->validate($this->params_Claim());
-        $this->companyclaim->fill($validated)->save();
+        $validated = $request->validate($this->paramsClaim());
 
-        return ['message' => 'ok'];
+        $companyId = $this->company->findOrFail($id);
+        $companyId->companyClaim()->create($validated);
+
+        return [
+            'message' => 'ok',
+            $companyId->load('companyclaim'),
+        ];
     }
 
     /**
      * companyClaim_Detail
+     * 
      * @param  int $id
      * @return array
      */
@@ -46,21 +59,21 @@ class CompanyClaimController extends Controller
     {
         return[
             'message' => 'ok',
-            $this->companyclaim->findOrFail($id),
+            $this->companyClaim->findOrFail($id),
         ];
     }
 
     /**
      * companyClaim_Updata
-     *
+     * 
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return array
      */
     public function update(Request $request, int $id)
     {
-        $validated = $request->validate($this->params_Claim());
-        $this->companyclaim->findOrFail($id)->update($validated);
+        $validated = $request->validate($this->paramsClaim());
+        $this->companyClaim->findOrFail($id)->update($validated);
 
         return ['message' => 'ok'];
     }
@@ -74,11 +87,12 @@ class CompanyClaimController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->companyclaim->findOrFail($id)->delete();
+        $this->companyClaim->findOrFail($id)->delete();
+
         return ['message' => 'ok'];
     }
 
-    private function params_Claim()
+    private function paramsClaim()
     {
         return[
         'claim_name' => ['required', 'string', 'max:255'],

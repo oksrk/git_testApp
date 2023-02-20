@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Company;
+use App\Models\CompanyClaim;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -24,8 +25,8 @@ class CompanyControllerTest extends TestCase
 
         $res = $this->postJson(route('api.company.create'), $params);
         $res->assertOk();
-        $data = Company::all();
 
+        $data = Company::all();
         $this->assertCount(1, $data);
 
         $newData = $data->last();
@@ -62,7 +63,7 @@ class CompanyControllerTest extends TestCase
         $res = $this->getJson(route('api.company.show', ['id' => $id]));
         $res->assertOk();
     }
-    
+
     /**
      * @test
      */
@@ -83,7 +84,7 @@ class CompanyControllerTest extends TestCase
 
         $res = $this->putJson(route('api.company.update', ['id' => $id]), $params);
         $res->assertOk();
-        
+
         $editedData = Company::find($id);
         $this->assertEquals($params['company_name'], $editedData->company_name);
         $this->assertEquals($params['company_name_kana'], $editedData->company_name_kana);
@@ -105,7 +106,6 @@ class CompanyControllerTest extends TestCase
 
         $res = $this->putJson(route('api.company.update', ['id' => $id]), $params);
         $res->assertUnprocessable();
-        
     }
 
     /**
@@ -118,7 +118,6 @@ class CompanyControllerTest extends TestCase
         $res->assertOk();
     }
 
-    
     /**
      * @test
      */
@@ -127,6 +126,34 @@ class CompanyControllerTest extends TestCase
         $id = Company::factory()->createOne()->id + 1;
         $res = $this->deleteJson(route('api.company.destroy', ['id'=>$id]));
         $res->assertNotFound();
+    }
+
+    /**
+     * @test
+     */
+    public function company_And_Claim_Detail()
+    {
+        $id = Company::factory()->createOne()->each(function($company){
+            $company->companyClaim()->save(CompanyClaim::factory()->make());
+        });
+        // dd($id);exit;
+        $res = $this->getJson(route('api.company.show.and.claim', ['id'=>$id]));
+        exit;
+        $res->assertOk();
+    }
+
+    /**
+     * @test
+     */
+    public function company_And_Claim_Detail_Failure()
+    {
+        $id = Company::factory()->createOne()->each(function($company){
+            CompanyClaim::factory()->create(['company_id'=>$company->id]);
+        });
+        // dd($id);exit;
+        // $ids = CompanyClaim::factory()->create()->id +1;
+        $res = $this->getJson(route('api.company.show.and.claim', ['id'=>$id]));
+        // $res->assertNotFound();
     }
 
     private function params()
@@ -141,5 +168,18 @@ class CompanyControllerTest extends TestCase
         'representative_name_kana'=> 'だいひょうしゃ',
         ];
     }
-    
+
+    private function paramsClaim()
+    {
+        return[
+        'claim_name' => 'テスト請求会社',
+        'claim_name_kana'=> 'てすとせいきゅうかいしゃ',
+        'post_code'=> '333-333',
+        'address'=> '東京都',
+        'tel'=> '090-1111-2222',
+        'claim_department_name'=> '請求部署名',
+        'claim_address_name'=> '請求先宛て',
+        'claim_address_name_kana'=> 'せいきゅうさきあて',
+        ];
+    }
 }

@@ -16,6 +16,7 @@ class CompanyFactory extends Factory
      * @var string
      */
     protected $model = Company::class;
+
     /**
      * Define the model's default state.
      *
@@ -23,22 +24,22 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
-        $company_name = $this->faker->company();
-        $company_name_kana= $this->faker->kanaName();
-        $post_code= $this->faker->postcode();
+        $company_Name = $this->faker->company();
+        $company_Name_Kana= $this->faker->kanaName();
+        $post_Code= $this->faker->postCode();
         $address= $this->faker->address();
         $tel= $this->faker->phoneNumber();
-        $representative_name= $this->faker->name();
-        $representative_name_kana= $this->faker->kanaName();
+        $representative_Name= $this->faker->name();
+        $representative_Name_Kana= $this->faker->kanaName();
 
         return [
-            'company_name' => $company_name,
-            'company_name_kana'=> $company_name_kana,
-            'post_code'=> $post_code,
+            'company_name' => $company_Name,
+            'company_name_kana'=> $company_Name_Kana,
+            'post_code'=> $post_Code,
             'address'=> $address,
             'tel'=> $tel,
-            'representative_name'=> $representative_name,
-            'representative_name_kana'=> $representative_name_kana,
+            'representative_name'=> $representative_Name,
+            'representative_name_kana'=> $representative_Name_Kana,
         ];
     }
 }

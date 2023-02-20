@@ -6,21 +6,25 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\Models\CompanyClaim;
 
 class CompanyController extends Controller
 {
     /**
     * @var Company
+    * @var CompanyClaim
     */
     private Company $company;
+    private CompanyClaim $companyClaim;
 
     /**
     * constructor function
     * @param Company $company
     */
-    public function __construct(Company $company)
+    public function __construct(Company $company, CompanyClaim $companyClaim)
     {
         $this->company = $company;
+        $this->companyClaim = $companyClaim;
     }
     
     /**
@@ -34,7 +38,7 @@ class CompanyController extends Controller
         $validated = $request->validate($this->params());
         $this->company->fill($validated)->save();
 
-        return ['message' => 'ok'];
+        return ['message' => 'ok',];
     }
 
     /**
@@ -62,11 +66,11 @@ class CompanyController extends Controller
         $validated = $request->validate($this->params());
         $this->company->findOrFail($id)->update($validated);
 
-        return ['message' => 'ok'];
+        return ['message' => 'ok',];
     }
 
     /**
-     * company_Delete
+     * company Delete
      * 
      * @param \Iluminate\Http\Request $request
      * @param int $id
@@ -75,21 +79,23 @@ class CompanyController extends Controller
     public function destroy(int $id)
     {
         $this->company->findOrFail($id)->delete();
-        return ['message' => 'ok'];
+
+        return ['message' => 'ok',];
     }
+    
     /**
-     * company_simultaneous
-     * 
-     * @param \Iluminate\Http\Request $request
-     * @param int $id
+     * company_And_Claim_Detail
+     * @param  int $id
      * @return array
      */
-    public function simultaneous(Request $request, int $id)
+    public function showclaim(int $id)
     {
-        $validated = $request->validate($this->params());
-        $validated +=$request->validate($this->params_Claim());
+        // $id = Company::with('companyClaim')->get();
 
-        $this->company->findOrFail($id)->update($validated);
+        return[
+            'message' => 'ok',
+            // $id,
+        ];
     }
 
     private function params()
@@ -104,18 +110,25 @@ class CompanyController extends Controller
         'representative_name_kana'=> ['required', 'string', 'max:255'],
         ];
     }
-    
-    private function params_Claim()
+
+    private function andparams()
     {
         return[
-        'claim_name' => ['required', 'string', 'max:255'],
-        'claim_name_kana'=> ['required', 'string', 'max:255'],
-        'post_code'=> ['required', 'string', 'max:255'],
-        'address'=> ['required', 'string', 'max:255'],
-        'tel'=> ['required', 'string', 'max:255'],
-        'claim_department_name'=> ['required', 'string', 'max:255'],
-        'claim_address_name'=> ['required', 'string', 'max:255'],
-        'claim_address_name_kana'=> ['required', 'string', 'max:255'],
+            'company_name' => ['required', 'string', 'max:255'],
+            'company_name_kana'=> ['required', 'string', 'max:255'],
+            'post_code'=> ['required', 'string', 'max:255'],
+            'address'=> ['required', 'string', 'max:255'],
+            'tel'=> ['required', 'string', 'max:255'],
+            'representative_name'=> ['required', 'string', 'max:255'],
+            'representative_name_kana'=> ['required', 'string', 'max:255'], 
+            'claim_name' => ['required', 'string', 'max:255'],
+            'claim_name_kana'=> ['required', 'string', 'max:255'],
+            'claim_post_code'=> ['required', 'string', 'max:255'],
+            'claim_address'=> ['required', 'string', 'max:255'],
+            'claim_tel'=> ['required', 'string', 'max:255'],
+            'claim_department_name'=> ['required', 'string', 'max:255'],
+            'claim_address_name'=> ['required', 'string', 'max:255'],
+            'claim_address_name_kana'=> ['required', 'string', 'max:255'],    
         ];
     }
 }

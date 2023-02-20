@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\Company;
 use App\Models\CompanyClaim;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -20,10 +21,10 @@ class CompanyClaimControllerTest extends TestCase
      */
     public function companyClaim_Register()
     {
-        $params = $this->params();
-        // dd($params);exit;
+        $companyId = Company::factory()->create()->id;
+        $params = $this->paramsClaim();
 
-        $res = $this->postJson(route('api.companyclaim.create'), $params);
+        $res = $this->postJson(route('api.companyclaim.create',['id'=>$companyId]), $params);
         $res->assertOk();
         $data = CompanyClaim::all();
 
@@ -47,10 +48,11 @@ class CompanyClaimControllerTest extends TestCase
      */
     public function companyCialm_Register_Failure()
     {
-        $params = $this->params();
+        $companyId = Company::factory()->create()->id;
+        $params = $this->paramsClaim();
         $params['claim_name'] = null;
 
-        $res = $this->postJson(route('api.companyclaim.create'), $params);
+        $res = $this->postJson(route('api.companyclaim.create', ['id'=>$companyId]), $params);
         $res->assertUnprocessable();
 
         $data = CompanyClaim::all();
@@ -83,7 +85,7 @@ class CompanyClaimControllerTest extends TestCase
     public function companyClaim_Updata()
     {
         $id = CompanyClaim::factory()->createOne()->id;
-        $params = $this->params();
+        $params = $this->paramsClaim();
 
         $res = $this->putJson(route('api.companyclaim.update', ['id' => $id]), $params);
         $res->assertOk();
@@ -107,7 +109,7 @@ class CompanyClaimControllerTest extends TestCase
     public function companyCliam_Updata_Failure()
     {
         $id = CompanyClaim::factory()->createOne()->id;
-        $params = $this->params();
+        $params = $this->paramsClaim();
         $params['claim_name'] = null;
 
         $res = $this->putJson(route('api.companyclaim.update', ['id' => $id]), $params);
@@ -135,8 +137,8 @@ class CompanyClaimControllerTest extends TestCase
         $res = $this->deleteJson(route('api.companyclaim.destroy', ['id'=>$id]));
         $res->assertNotFound();
     }
-    
-    private function params()
+
+    private function paramsClaim()
     {
         return[
         'claim_name' => 'テスト請求会社',
@@ -147,7 +149,6 @@ class CompanyClaimControllerTest extends TestCase
         'claim_department_name'=> '請求部署名',
         'claim_address_name'=> '請求先宛て',
         'claim_address_name_kana'=> 'せいきゅうさきあて',
-
         ];
     }
 }
