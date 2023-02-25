@@ -25,26 +25,26 @@ class CompanyClaimFactory extends Factory
      */
     public function definition()
     {
-        $company_Id = Company::factory()->create()->id;
-        $claim_Name = $this->faker->company();
-        $claim_Name_Kana= $this->faker->kanaName();
-        $post_Code= $this->faker->postCode();
+        $companyId = Company::factory()->create()->id;
+        $claimName = $this->faker->company();
+        $claimNameKana= $this->faker->kanaName();
+        $postCode= $this->faker->postCode();
         $address= $this->faker->address();
         $tel= $this->faker->phoneNumber();
-        $claim_Department_Name= $this->faker->name();
-        $claim_Address_Name= $this->faker->address();
-        $claim_Address_Name_Kana= $this->faker->kanaName();
+        $claimDepartmentName= $this->faker->name();
+        $claimAddressName= $this->faker->address();
+        $claimAddressNameKana= $this->faker->kanaName();
 
         return [
-            'company_id' => $company_Id,
-            'claim_name' => $claim_Name,
-            'claim_name_kana'=> $claim_Name_Kana,
-            'post_code'=> $post_Code,
+            'company_id' => $companyId,
+            'claim_name' => $claimName,
+            'claim_name_kana'=> $claimNameKana,
+            'post_code'=> $postCode,
             'address'=> $address,
             'tel'=> $tel,
-            'claim_department_name'=> $claim_Department_Name,
-            'claim_address_name'=> $claim_Address_Name,
-            'claim_address_name_kana'=> $claim_Address_Name_Kana,
+            'claim_department_name'=> $claimDepartmentName,
+            'claim_address_name'=> $claimAddressName,
+            'claim_address_name_kana'=> $claimAddressNameKana,
         ];
     }
 }

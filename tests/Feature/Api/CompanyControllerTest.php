@@ -19,9 +19,9 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Register()
+    public function companyRegister()
     {
-        $params = $this->params();
+        $params = $this->companyParam();
 
         $res = $this->postJson(route('api.company.create'), $params);
         $res->assertOk();
@@ -42,9 +42,9 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Register_Failure()
+    public function companyRegisterFailure()
     {
-        $params = $this->params();
+        $params = $this->companyParam();
         $params['company_name'] = null;
 
         $res = $this->postJson(route('api.company.create'), $params);
@@ -57,9 +57,10 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Detail()
+    public function companyDetail()
     {
-        $id = Company::factory()->createOne()->id;
+        $id = Company::factory()->createOne();
+
         $res = $this->getJson(route('api.company.show', ['id' => $id]));
         $res->assertOk();
     }
@@ -67,9 +68,10 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Detail_Failure()
+    public function companyDetailFailure()
     {
         $id = Company::factory()->createOne()->id + 1;
+
         $res = $this->getJson(route('api.company.show', ['id' => $id]));
         $res->assertNotFound();
     }
@@ -77,10 +79,10 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Updata()
+    public function companyUpdata()
     {
         $id = Company::factory()->createOne()->id;
-        $params = $this->params();
+        $params = $this->companyParam();
 
         $res = $this->putJson(route('api.company.update', ['id' => $id]), $params);
         $res->assertOk();
@@ -98,10 +100,10 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Updata_Failure()
+    public function companyUpdataFailure()
     {
         $id = Company::factory()->createOne()->id;
-        $params = $this->params();
+        $params = $this->companyParam();
         $params['company_name'] = null;
 
         $res = $this->putJson(route('api.company.update', ['id' => $id]), $params);
@@ -111,54 +113,50 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
-    public function company_Delete()
+    public function companyDelete()
     {
         $id = Company::factory()->createOne()->id;
-        $res = $this->deleteJson(route('api.company.destroy', ['id'=>$id]));
+
+        $res = $this->deleteJson(route('api.company.destroy', ['id' => $id]));
         $res->assertOk();
     }
 
     /**
      * @test
      */
-    public function company_Delete_Failure()
+    public function companyDeleteFailure()
     {
         $id = Company::factory()->createOne()->id + 1;
-        $res = $this->deleteJson(route('api.company.destroy', ['id'=>$id]));
+
+        $res = $this->deleteJson(route('api.company.destroy', ['id' => $id]));
         $res->assertNotFound();
     }
 
     /**
      * @test
      */
-    public function company_And_Claim_Detail()
+    public function companyAndClaimDetail()
     {
-        $id = Company::factory()->createOne()->each(function($company){
-            $company->companyClaim()->save(CompanyClaim::factory()->make());
-        });
-        // dd($id);exit;
-        $res = $this->getJson(route('api.company.show.and.claim', ['id'=>$id]));
-        exit;
+        $id = CompanyClaim::factory()->createOne()->company_id;
+
+        $res = $this->getJson(route('api.company.show.and.claim', ['id' => $id]));
         $res->assertOk();
     }
 
     /**
      * @test
      */
-    public function company_And_Claim_Detail_Failure()
+    public function companyAndClaimDetailFailure()
     {
-        $id = Company::factory()->createOne()->each(function($company){
-            CompanyClaim::factory()->create(['company_id'=>$company->id]);
-        });
-        // dd($id);exit;
-        // $ids = CompanyClaim::factory()->create()->id +1;
-        $res = $this->getJson(route('api.company.show.and.claim', ['id'=>$id]));
-        // $res->assertNotFound();
+        $id = CompanyClaim::factory()->createOne()->company_id;
+
+        $res = $this->getJson(route('api.company.show.and.claim', ['id' => $id + 1]));
+        $res->assertNotFound();
     }
 
-    private function params()
+    private function companyParam()
     {
-        return[
+        return [
         'company_name' => 'テスト会社',
         'company_name_kana'=> 'てすとかいしゃ',
         'post_code'=> '333-333',
@@ -166,20 +164,6 @@ class CompanyControllerTest extends TestCase
         'tel'=> '090-1111-2222',
         'representative_name'=> '代表者',
         'representative_name_kana'=> 'だいひょうしゃ',
-        ];
-    }
-
-    private function paramsClaim()
-    {
-        return[
-        'claim_name' => 'テスト請求会社',
-        'claim_name_kana'=> 'てすとせいきゅうかいしゃ',
-        'post_code'=> '333-333',
-        'address'=> '東京都',
-        'tel'=> '090-1111-2222',
-        'claim_department_name'=> '請求部署名',
-        'claim_address_name'=> '請求先宛て',
-        'claim_address_name_kana'=> 'せいきゅうさきあて',
         ];
     }
 }

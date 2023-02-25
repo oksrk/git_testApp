@@ -24,22 +24,22 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
-        $company_Name = $this->faker->company();
-        $company_Name_Kana= $this->faker->kanaName();
-        $post_Code= $this->faker->postCode();
+        $companyName = $this->faker->company();
+        $companyNameKana= $this->faker->kanaName();
+        $postCode= $this->faker->postCode();
         $address= $this->faker->address();
         $tel= $this->faker->phoneNumber();
-        $representative_Name= $this->faker->name();
-        $representative_Name_Kana= $this->faker->kanaName();
+        $representativeName= $this->faker->name();
+        $representativeNameKana= $this->faker->kanaName();
 
         return [
-            'company_name' => $company_Name,
-            'company_name_kana'=> $company_Name_Kana,
-            'post_code'=> $post_Code,
+            'company_name' => $companyName,
+            'company_name_kana'=> $companyNameKana,
+            'post_code'=> $postCode,
             'address'=> $address,
             'tel'=> $tel,
-            'representative_name'=> $representative_Name,
-            'representative_name_kana'=> $representative_Name_Kana,
+            'representative_name'=> $representativeName,
+            'representative_name_kana'=> $representativeNameKana,
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 class CompanyClaim extends Model
@@ -16,6 +15,7 @@ class CompanyClaim extends Model
     * @var array
     */
     protected $fillable = [
+        'company_id',
         'claim_name',
         'claim_name_kana',
         'post_code',
@@ -31,7 +31,7 @@ class CompanyClaim extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    public function company():BelongsTo
+    public function company()
     {
         return $this->belongsTo(Company::class);
     }

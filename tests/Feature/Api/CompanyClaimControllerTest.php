@@ -19,10 +19,10 @@ class CompanyClaimControllerTest extends TestCase
     /**
      * @test
      */
-    public function companyClaim_Register()
+    public function companyClaimRegister()
     {
         $companyId = Company::factory()->create()->id;
-        $params = $this->paramsClaim();
+        $params = $this->companyClaimParam();
 
         $res = $this->postJson(route('api.companyclaim.create',['id'=>$companyId]), $params);
         $res->assertOk();
@@ -39,17 +39,15 @@ class CompanyClaimControllerTest extends TestCase
         $this->assertEquals($params['claim_department_name'], $newData->claim_department_name);
         $this->assertEquals($params['claim_address_name'], $newData->claim_address_name);
         $this->assertEquals($params['claim_address_name_kana'], $newData->claim_address_name_kana);
-
-        
     }
 
     /**
      * @test
      */
-    public function companyCialm_Register_Failure()
+    public function companyCialmRegisterFailure()
     {
         $companyId = Company::factory()->create()->id;
-        $params = $this->paramsClaim();
+        $params = $this->companyClaimParam();
         $params['claim_name'] = null;
 
         $res = $this->postJson(route('api.companyclaim.create', ['id'=>$companyId]), $params);
@@ -62,17 +60,17 @@ class CompanyClaimControllerTest extends TestCase
     /**
      * @test
      */
-    public function companyClaim_Detail()
+    public function companyClaimDetail()
     {
         $id = CompanyClaim::factory()->createOne()->id;
         $res = $this->getJson(route('api.companyclaim.show', ['id' => $id]));
         $res->assertOk();
     }
-    
+
     /**
      * @test
      */
-    public function companyClaim_Detail_Failure()
+    public function companyClaimDetailFailure()
     {
         $id = CompanyClaim::factory()->createOne()->id + 1;
         $res = $this->getJson(route('api.companyclaim.show', ['id' => $id]));
@@ -82,14 +80,14 @@ class CompanyClaimControllerTest extends TestCase
     /**
      * @test
      */
-    public function companyClaim_Updata()
+    public function companyClaimUpdata()
     {
         $id = CompanyClaim::factory()->createOne()->id;
-        $params = $this->paramsClaim();
+        $params = $this->companyClaimParam();
 
         $res = $this->putJson(route('api.companyclaim.update', ['id' => $id]), $params);
         $res->assertOk();
-        
+
         $editedData = CompanyClaim::find($id);
         $this->assertEquals($params['claim_name'], $editedData->claim_name);
         $this->assertEquals($params['claim_name_kana'], $editedData->claim_name_kana);
@@ -99,17 +97,15 @@ class CompanyClaimControllerTest extends TestCase
         $this->assertEquals($params['claim_department_name'], $editedData->claim_department_name);
         $this->assertEquals($params['claim_address_name'], $editedData->claim_address_name);
         $this->assertEquals($params['claim_address_name_kana'], $editedData->claim_address_name_kana);
-
-
     }
 
     /**
      * @test
      */
-    public function companyCliam_Updata_Failure()
+    public function companyCliamUpdataFailure()
     {
         $id = CompanyClaim::factory()->createOne()->id;
-        $params = $this->paramsClaim();
+        $params = $this->companyClaimParam();
         $params['claim_name'] = null;
 
         $res = $this->putJson(route('api.companyclaim.update', ['id' => $id]), $params);
@@ -120,25 +116,24 @@ class CompanyClaimControllerTest extends TestCase
     /**
      * @test
      */
-    public function companyClaim_Delete()
+    public function companyClaimDelete()
     {
         $id = CompanyClaim::factory()->createOne()->id;
         $res = $this->deleteJson(route('api.companyclaim.destroy', ['id'=>$id]));
         $res->assertOk();
     }
 
-    
     /**
      * @test
      */
-    public function companyClaim_Delete_Failure()
+    public function companyClaimDeleteFailure()
     {
         $id = CompanyClaim::factory()->createOne()->id + 1;
         $res = $this->deleteJson(route('api.companyclaim.destroy', ['id'=>$id]));
         $res->assertNotFound();
     }
 
-    private function paramsClaim()
+    private function companyClaimParam()
     {
         return[
         'claim_name' => 'テスト請求会社',

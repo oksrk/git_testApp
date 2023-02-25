@@ -30,7 +30,7 @@ class CompanyClaimController extends Controller
     }
     
     /**
-     * companyClaim_Register
+     * companyClaimRegister
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $id
@@ -50,7 +50,7 @@ class CompanyClaimController extends Controller
     }
 
     /**
-     * companyClaim_Detail
+     * companyClaimDetail
      * 
      * @param  int $id
      * @return array
@@ -64,7 +64,7 @@ class CompanyClaimController extends Controller
     }
 
     /**
-     * companyClaim_Updata
+     * companyClaimUpdata
      * 
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
@@ -79,7 +79,7 @@ class CompanyClaimController extends Controller
     }
 
     /**
-     * companyClaim_Delete
+     * companyClaimDelete
      * 
      * @param \Iluminate\Http\Request $request
      * @param int $id
@@ -94,7 +94,7 @@ class CompanyClaimController extends Controller
 
     private function paramsClaim()
     {
-        return[
+        return [
         'claim_name' => ['required', 'string', 'max:255'],
         'claim_name_kana'=> ['required', 'string', 'max:255'],
         'post_code'=> ['required', 'string', 'max:255'],

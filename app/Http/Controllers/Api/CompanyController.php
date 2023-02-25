@@ -28,21 +28,21 @@ class CompanyController extends Controller
     }
     
     /**
-     * company_Register
+     * companyRegister
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function store(Request $request)
     {
-        $validated = $request->validate($this->params());
+        $validated = $request->validate($this->getCompanyValidationRule());
         $this->company->fill($validated)->save();
 
         return ['message' => 'ok',];
     }
 
     /**
-     * company_Detail
+     * companyDetail
      * @param  int $id
      * @return array
      */
@@ -55,7 +55,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * company_Updata
+     * companyUpdata
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
@@ -63,14 +63,14 @@ class CompanyController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $validated = $request->validate($this->params());
+        $validated = $request->validate($this->getCompanyValidationRule());
         $this->company->findOrFail($id)->update($validated);
 
         return ['message' => 'ok',];
     }
 
     /**
-     * company Delete
+     * companyDelete
      * 
      * @param \Iluminate\Http\Request $request
      * @param int $id
@@ -82,54 +82,37 @@ class CompanyController extends Controller
 
         return ['message' => 'ok',];
     }
-    
+
     /**
-     * company_And_Claim_Detail
-     * @param  int $id
+     * companyAndClaimDetail
+     * @param int $id
      * @return array
      */
-    public function showclaim(int $id)
+    public function showClaim(int $id)
     {
-        // $id = Company::with('companyClaim')->get();
+        $companyData = $this->company
+            ->findOrFail($id)
+            ->join('company_claims', 'companies.id', '=', 'company_claims.company_id')
+            ->get();
 
-        return[
+        return [
             'message' => 'ok',
-            // $id,
+            'company_data' => $companyData,
         ];
     }
 
-    private function params()
+    private function getCompanyValidationRule()
     {
-        return[
-        'company_name' => ['required', 'string', 'max:255'],
-        'company_name_kana'=> ['required', 'string', 'max:255'],
-        'post_code'=> ['required', 'string', 'max:255'],
-        'address'=> ['required', 'string', 'max:255'],
-        'tel'=> ['required', 'string', 'max:255'],
-        'representative_name'=> ['required', 'string', 'max:255'],
-        'representative_name_kana'=> ['required', 'string', 'max:255'],
-        ];
-    }
-
-    private function andparams()
-    {
-        return[
+        return [
             'company_name' => ['required', 'string', 'max:255'],
             'company_name_kana'=> ['required', 'string', 'max:255'],
             'post_code'=> ['required', 'string', 'max:255'],
             'address'=> ['required', 'string', 'max:255'],
             'tel'=> ['required', 'string', 'max:255'],
             'representative_name'=> ['required', 'string', 'max:255'],
-            'representative_name_kana'=> ['required', 'string', 'max:255'], 
-            'claim_name' => ['required', 'string', 'max:255'],
-            'claim_name_kana'=> ['required', 'string', 'max:255'],
-            'claim_post_code'=> ['required', 'string', 'max:255'],
-            'claim_address'=> ['required', 'string', 'max:255'],
-            'claim_tel'=> ['required', 'string', 'max:255'],
-            'claim_department_name'=> ['required', 'string', 'max:255'],
-            'claim_address_name'=> ['required', 'string', 'max:255'],
-            'claim_address_name_kana'=> ['required', 'string', 'max:255'],    
+            'representative_name_kana'=> ['required', 'string', 'max:255'],
         ];
     }
+
 }
 
