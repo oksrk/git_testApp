@@ -4,38 +4,35 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
-use App\Models\CompanyClaim;
 
 class CompanyController extends Controller
 {
     /**
     * @var Company
-    * @var CompanyClaim
     */
     private Company $company;
-    private CompanyClaim $companyClaim;
 
     /**
     * constructor function
     * @param Company $company
     */
-    public function __construct(Company $company, CompanyClaim $companyClaim)
+    public function __construct(Company $company)
     {
         $this->company = $company;
-        $this->companyClaim = $companyClaim;
     }
     
     /**
      * companyRegister
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param App\Http\Requests\CompanyRequest
      * @return array
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        $validated = $request->validate($this->getCompanyValidationRule());
+        // dd($request);exit;
+        $validated = $request->validated();
         $this->company->fill($validated)->save();
 
         return ['message' => 'ok',];
@@ -57,13 +54,13 @@ class CompanyController extends Controller
     /**
      * companyUpdata
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param App\Http\Requests\CompanyRequest
+     * @param int $id
      * @return array
      */
-    public function update(Request $request, int $id)
+    public function update(CompanyRequest $request, int $id)
     {
-        $validated = $request->validate($this->getCompanyValidationRule());
+        $validated = $request->validated();
         $this->company->findOrFail($id)->update($validated);
 
         return ['message' => 'ok',];
@@ -72,7 +69,6 @@ class CompanyController extends Controller
     /**
      * companyDelete
      * 
-     * @param \Iluminate\Http\Request $request
      * @param int $id
      * @return array
      */
@@ -100,19 +96,5 @@ class CompanyController extends Controller
             'company_data' => $companyData,
         ];
     }
-
-    private function getCompanyValidationRule()
-    {
-        return [
-            'company_name' => ['required', 'string', 'max:255'],
-            'company_name_kana'=> ['required', 'string', 'max:255'],
-            'post_code'=> ['required', 'string', 'max:255'],
-            'address'=> ['required', 'string', 'max:255'],
-            'tel'=> ['required', 'string', 'max:255'],
-            'representative_name'=> ['required', 'string', 'max:255'],
-            'representative_name_kana'=> ['required', 'string', 'max:255'],
-        ];
-    }
-
 }
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyClaimRequest;
 use App\Models\Company;
-use Illuminate\Http\Request;
 use App\Models\CompanyClaim;
 
 class CompanyClaimController extends Controller
@@ -32,13 +32,13 @@ class CompanyClaimController extends Controller
     /**
      * companyClaimRegister
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CompanyClaimRequest $request
      * @param int $id
      * @return array
      */
-    public function store(Request $request, int $id)
+    public function store(CompanyClaimRequest $request, int $id)
     {
-        $validated = $request->validate($this->paramsClaim());
+        $validated = $request->validated();
 
         $companyId = $this->company->findOrFail($id);
         $companyId->companyClaim()->create($validated);
@@ -66,13 +66,13 @@ class CompanyClaimController extends Controller
     /**
      * companyClaimUpdata
      * 
-     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Http\Requests\CompanyClaimRequest $request
      * @param  int $id
      * @return array
      */
-    public function update(Request $request, int $id)
+    public function update(CompanyClaimRequest $request, int $id)
     {
-        $validated = $request->validate($this->paramsClaim());
+        $validated = $request->validated();
         $this->companyClaim->findOrFail($id)->update($validated);
 
         return ['message' => 'ok'];
@@ -81,7 +81,6 @@ class CompanyClaimController extends Controller
     /**
      * companyClaimDelete
      * 
-     * @param \Iluminate\Http\Request $request
      * @param int $id
      * @return array
      */
@@ -90,19 +89,5 @@ class CompanyClaimController extends Controller
         $this->companyClaim->findOrFail($id)->delete();
 
         return ['message' => 'ok'];
-    }
-
-    private function paramsClaim()
-    {
-        return [
-        'claim_name' => ['required', 'string', 'max:255'],
-        'claim_name_kana'=> ['required', 'string', 'max:255'],
-        'post_code'=> ['required', 'string', 'max:255'],
-        'address'=> ['required', 'string', 'max:255'],
-        'tel'=> ['required', 'string', 'max:255'],
-        'claim_department_name'=> ['required', 'string', 'max:255'],
-        'claim_address_name'=> ['required', 'string', 'max:255'],
-        'claim_address_name_kana'=> ['required', 'string', 'max:255'],
-        ];
     }
 }
