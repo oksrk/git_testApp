@@ -135,6 +135,28 @@ class CompanyControllerTest extends TestCase
     /**
      * @test
      */
+    public function companyAndClaimDelete()
+    {
+        $id = CompanyClaim::factory()->createOne()->company_id;
+
+        $res = $this->deleteJson(route('api.company.destroy.and.claim', ['id' => $id]));
+        $res->assertOk();
+    }
+
+    /**
+     * @test
+     */
+    public function companyAndClaimDeleteFailure()
+    {
+        $id = CompanyClaim::factory()->createOne()->company_id + 1;
+
+        $res = $this->deleteJson(route('api.company.destroy.and.claim', ['id' => $id]));
+        $res->assertNotFound();
+    }
+
+    /**
+     * @test
+     */
     public function companyAndClaimDetail()
     {
         $id = CompanyClaim::factory()->createOne()->company_id;
@@ -148,9 +170,9 @@ class CompanyControllerTest extends TestCase
      */
     public function companyAndClaimDetailFailure()
     {
-        $id = CompanyClaim::factory()->createOne()->company_id;
+        $id = CompanyClaim::factory()->createOne()->company_id + 1;
 
-        $res = $this->getJson(route('api.company.show.and.claim', ['id' => $id + 1]));
+        $res = $this->getJson(route('api.company.show.and.claim', ['id' => $id]));
         $res->assertNotFound();
     }
 

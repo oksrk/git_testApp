@@ -81,19 +81,38 @@ class CompanyController extends Controller
 
     /**
      * companyAndClaimDetail
+     * 
      * @param int $id
      * @return array
      */
-    public function showClaim(int $id)
+    public function withClaim(int $id)
     {
-        $companyData = $this->company
-            ->findOrFail($id)
-            ->join('company_claims', 'companies.id', '=', 'company_claims.company_id')
-            ->get();
+        $companyWithClaim = $this->company
+            ->with('claim')
+            ->findOrFail($id);
 
         return [
             'message' => 'ok',
-            'company_data' => $companyData,
+            'company_with_claim' => $companyWithClaim,
+        ];
+    }
+        /**
+     * companyAndClaimDelete
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function withDestroyClaim(int $id)
+    {
+        
+        $companyWithClaim = $this->company
+            ->with('claim')
+            ->findOrFail($id)
+            ->update();
+
+        return [
+            'message' => 'ok',
+            'company_with_claim' => $companyWithClaim,
         ];
     }
 }

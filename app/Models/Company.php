@@ -28,7 +28,7 @@ class Company extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    public function companyClaim()
+    public function claim()
     {
         return $this->hasOne(CompanyClaim::class);
     }

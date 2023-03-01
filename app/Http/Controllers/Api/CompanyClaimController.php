@@ -41,11 +41,11 @@ class CompanyClaimController extends Controller
         $validated = $request->validated();
 
         $companyId = $this->company->findOrFail($id);
-        $companyId->companyClaim()->create($validated);
+        $companyId->claim()->create($validated);
 
         return [
             'message' => 'ok',
-            $companyId->load('companyclaim'),
+            $companyId->load('claim'),
         ];
     }
 

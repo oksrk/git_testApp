@@ -30,7 +30,9 @@ Route::post('company/create', [CompanyController::class, 'store'])->name('api.co
 Route::get('company/{id}/show', [CompanyController::class, 'show'])->name('api.company.show');
 Route::put('company/{id}/update', [CompanyController::class, 'update'])->name('api.company.update');
 Route::delete('company/{id}/destroy', [CompanyController::class, 'destroy'])->name('api.company.destroy');
-Route::get('company/companyclaim/{id}/show', [CompanyController::class, 'showClaim'])->name('api.company.show.and.claim');
+Route::get('company/companyclaim/{id}/show', [CompanyController::class, 'withClaim'])->name('api.company.show.and.claim');
+Route::delete('company/companyclaim/{id}/destroy', [CompanyController::class, 'withDestroyClaim'])->name('api.company.destroy.and.claim');
+
 
 Route::post('companyclaim/{id}/create', [CompanyClaimController::class, 'store'])->name('api.companyclaim.create');
 Route::get('companyclaim/{id}/show', [CompanyClaimController::class, 'show'])->name('api.companyclaim.show');
