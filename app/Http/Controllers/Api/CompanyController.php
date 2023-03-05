@@ -75,9 +75,28 @@ class CompanyController extends Controller
     public function destroy(int $id)
     {
         $this->company->findOrFail($id)->delete();
-
+        
         return ['message' => 'ok',];
     }
+
+        /**
+     * companyAndClaimDelete
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function withDestroyClaim(int $id)
+    {
+        $companyWithClaim = $this->company
+            ->with('claim')
+            ->findOrFail($id)
+            ->delete();
+
+        return [
+            'message' => 'ok',
+            'company_with_claim' => $companyWithClaim,
+        ];
+}
 
     /**
      * companyAndClaimDetail
@@ -90,25 +109,6 @@ class CompanyController extends Controller
         $companyWithClaim = $this->company
             ->with('claim')
             ->findOrFail($id);
-
-        return [
-            'message' => 'ok',
-            'company_with_claim' => $companyWithClaim,
-        ];
-    }
-        /**
-     * companyAndClaimDelete
-     * 
-     * @param int $id
-     * @return array
-     */
-    public function withDestroyClaim(int $id)
-    {
-        
-        $companyWithClaim = $this->company
-            ->with('claim')
-            ->findOrFail($id)
-            ->update();
 
         return [
             'message' => 'ok',
