@@ -119,6 +119,7 @@ class CompanyControllerTest extends TestCase
 
         $res = $this->deleteJson(route('api.company.destroy', ['id' => $id]));
         $res->assertOk();
+        $this->assertEquals(0, Company::count());
     }
 
     /**
@@ -141,6 +142,8 @@ class CompanyControllerTest extends TestCase
 
         $res = $this->deleteJson(route('api.company.destroy.and.claim', ['id' => $id]));
         $res->assertOk();
+        $this->assertEquals(0, CompanyClaim::count());
+        $this->assertEquals(0, Company::count());
     }
 
     /**
