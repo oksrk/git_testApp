@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
+use App\Models\CompanyClaim;
 
 class CompanyController extends Controller
 {
@@ -89,13 +90,13 @@ class CompanyController extends Controller
     {
         $companyWithClaim = $this->company
             ->with('claim')
-            ->findOrFail($id)
-            ->delete();
+            ->findOrFail($id);
+            
+        $companyForeignDelete = CompanyClaim::where('company_id','=',$id)->delete();
+        $companyWithClaim->$companyForeignDelete;
+        $this->company::where('id','=',$id)->delete();
 
-        return [
-            'message' => 'ok',
-            'company_with_claim' => $companyWithClaim,
-        ];
+        return ['message' => 'ok',];
 }
 
     /**
