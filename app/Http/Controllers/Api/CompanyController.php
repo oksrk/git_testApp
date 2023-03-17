@@ -95,10 +95,9 @@ class CompanyController extends Controller
      */
     public function withDestroyClaim(int $id)
     {
-        $companyWithClaim = $this->company
-            ->with('claim')
-            ->findOrFail($id)
-            ->delete();
+        $companyWithClaim = $this->company->with('claim')->findOrFail($id);
+        $companyWithClaim->claim()->delete();
+        $companyWithClaim->delete();
 
         return [
             'message' => 'ok',
