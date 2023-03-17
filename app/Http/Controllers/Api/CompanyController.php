@@ -8,20 +8,27 @@ use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Models\CompanyClaim;
 
+use function PHPUnit\Framework\isNull;
+
 class CompanyController extends Controller
 {
     /**
     * @var Company
+    * @var CompanyClaim
     */
     private Company $company;
+    private CompanyClaim $companyClaim;
+
 
     /**
     * constructor function
     * @param Company $company
     */
-    public function __construct(Company $company)
+    public function __construct(Company $company,CompanyClaim $companyClaim)
     {
         $this->company = $company;
+        $this->companyClaim = $companyClaim;
+
     }
     
     /**
@@ -90,13 +97,13 @@ class CompanyController extends Controller
     {
         $companyWithClaim = $this->company
             ->with('claim')
-            ->findOrFail($id);
-            
-        $companyForeignDelete = CompanyClaim::where('company_id','=',$id)->delete();
-        $companyWithClaim->$companyForeignDelete;
-        $this->company::where('id','=',$id)->delete();
+            ->findOrFail($id)
+            ->delete();
 
-        return ['message' => 'ok',];
+        return [
+            'message' => 'ok',
+            'company_with_claim' =>$companyWithClaim,
+        ];
 }
 
     /**

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('company_id')->references('id')->on('companies')->cascadeOnDelete();
         });
     }
 
@@ -39,5 +39,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('company_claims');
+        
     }
 };
