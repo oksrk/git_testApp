@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Models\CompanyClaim;
-
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -95,9 +94,12 @@ class CompanyController extends Controller
      */
     public function withDestroyClaim(int $id)
     {
-        $companyWithClaim = $this->company->with('claim')->findOrFail($id);
-        $companyWithClaim->claim()->delete();
-        $companyWithClaim->delete();
+        $companyWithClaim = DB::transaction(function()use($id){
+            $companyWithClaim =$this->company->with('claim')->findOrFail($id);
+            $companyWithClaim->claim()->delete();
+            $companyWithClaim->delete();
+            return $companyWithClaim->load('claim');
+        });
 
         return [
             'message' => 'ok',
