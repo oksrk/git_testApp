@@ -98,7 +98,6 @@ class CompanyController extends Controller
             $companyWithClaim =$this->company->with('claim')->findOrFail($id);
             $companyWithClaim->claim()->delete();
             $companyWithClaim->delete();
-            return $companyWithClaim;
         });
 
         return [
