@@ -104,7 +104,7 @@ class CompanyController extends Controller
             'message' => 'ok',
             'company_with_claim' =>$companyWithClaim,
         ];
-}
+    }
 
     /**
      * companyAndClaimDetail
